@@ -1,43 +1,58 @@
-# 🤖 Autonomous Support Resolution Copilot
-### Multi-Agent AI · LangGraph · RAG · 100% Free with Ollama
+# 🤖 Customer Support Resolution Copilot
+
+### Multi-Agent AI · LangGraph · RAG · Ollama + Qwen2.5-Coder
 
 ---
 
-## ✅ What's changed from the original?
-The original used OpenAI (paid). This version uses **Ollama + Llama 3.2** — completely free, runs on your own computer, no API keys needed.
+## 🚀 Setup Guide
+
+Follow the steps below in order.
 
 ---
 
-## 🚀 SETUP GUIDE (Follow in Order)
+## Step 1 — Install Ollama
 
-### STEP 1 — Install Ollama
-Go to **https://ollama.com/download** and download Ollama for your OS (Windows/Mac/Linux).
+Download and install Ollama for your operating system:
 
-After installing, open a terminal and run:
+[Ollama Download Page](https://ollama.com/download?utm_source=chatgpt.com)
+
+After installation, start Ollama:
+
 ```bash
 ollama serve
 ```
-Leave this terminal open. Ollama needs to be running whenever you use the project.
+
+Leave this terminal open. Ollama must be running whenever you use the project.
 
 ---
 
-### STEP 2 — Pull the Llama model
-Open a **second terminal** and run:
-```bash
-ollama pull llama3.2
-```
-This downloads ~2GB (one-time only). Wait for it to finish.
+## Step 2 — Pull the Model
 
-To verify it worked:
+Open a second terminal and run:
+
+```bash
+ollama pull qwen2.5-coder:7b
+```
+
+This is a one-time download of approximately 4.7 GB.
+
+Verify installation:
+
 ```bash
 ollama list
 ```
-You should see `llama3.2` in the list.
+
+Expected output:
+
+```text
+NAME
+qwen2.5-coder:7b
+```
 
 ---
 
-### STEP 3 — Create the project folder structure
-Open a terminal and run these commands one by one:
+## Step 3 — Create the Project Structure
+
 ```bash
 mkdir support-copilot
 cd support-copilot
@@ -55,10 +70,11 @@ mkdir -p notebooks
 
 ---
 
-### STEP 4 — Copy all the code files
-Copy every file from this project into the correct folders as shown in the structure below.
+## Step 4 — Copy Project Files
 
-```
+Copy all project files into the following structure:
+
+```text
 support-copilot/
 ├── .env
 ├── .gitignore
@@ -75,7 +91,6 @@ support-copilot/
 │   ├── __init__.py
 │   ├── config.py
 │   ├── agents/
-│   │   ├── __init__.py
 │   │   ├── intake_agent.py
 │   │   ├── routing_agent.py
 │   │   ├── retrieval_agent.py
@@ -83,18 +98,14 @@ support-copilot/
 │   │   ├── escalation_agent.py
 │   │   └── followup_agent.py
 │   ├── graph/
-│   │   ├── __init__.py
 │   │   ├── state.py
 │   │   └── workflow.py
 │   ├── rag/
-│   │   ├── __init__.py
 │   │   ├── ingest.py
 │   │   └── retriever.py
 │   ├── evaluation/
-│   │   ├── __init__.py
 │   │   └── evaluator.py
 │   └── utils/
-│       ├── __init__.py
 │       └── llm.py
 ├── api/
 │   └── main.py
@@ -104,167 +115,301 @@ support-copilot/
 
 ---
 
-### STEP 5 — Create a Python virtual environment
-In your `support-copilot/` folder:
+## Step 5 — Create a Python Virtual Environment
 
-**Windows:**
+### Windows
+
 ```bash
 python -m venv venv
 venv\Scripts\activate
 ```
 
-**Mac/Linux:**
+### macOS / Linux
+
 ```bash
-python -m venv venv
+python3.11 -m venv venv
 source venv/bin/activate
 ```
 
-You should see `(venv)` at the start of your terminal prompt.
+You should see:
+
+```text
+(venv)
+```
+
+at the beginning of your terminal prompt.
 
 ---
 
-### STEP 6 — Install dependencies
-With venv activated:
+## Step 6 — Install Dependencies
+
+With the virtual environment activated:
+
 ```bash
 pip install -r requirements.txt
 ```
-This takes 3-5 minutes. Sentence-transformers is the largest download (~500MB, one-time).
+
+Installation may take several minutes because PyTorch and Sentence Transformers are large dependencies.
 
 ---
 
-### STEP 7 — Ingest the knowledge base (one-time setup)
+## Step 7 — Configure Ollama
+
+Create a `.env` file in the project root:
+
+```env
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=qwen2.5-coder:7b
+```
+
+---
+
+## Step 8 — Ingest the Knowledge Base (One-Time Setup)
+
 ```bash
 python -m src.rag.ingest
 ```
 
 Expected output:
-```
+
+```text
 Loading embedding model: all-MiniLM-L6-v2...
-✅ Ingested 24 chunks from 4 files into ChromaDB.
+Ingested knowledge base into ChromaDB.
 ```
 
-If you see an error about `data/knowledge_base`, make sure you created the .md files in Step 4.
+If you encounter a knowledge base error, ensure the markdown files exist inside:
+
+```text
+data/knowledge_base/
+```
 
 ---
 
-### STEP 8 — Run the Streamlit UI
-Make sure Ollama is still running (`ollama serve` in background terminal).
+## Step 9 — Run the Streamlit Interface
+
+Make sure Ollama is still running.
 
 ```bash
 streamlit run ui/app.py
 ```
 
-Open your browser to: **http://localhost:8501**
+Open:
 
-The UI will show a green banner if Ollama is running correctly.
+```text
+http://localhost:8501
+```
+
+The application should launch in your browser.
 
 ---
 
-### STEP 9 — (Optional) Run the FastAPI backend
+## Step 10 — Run the FastAPI Backend (Optional)
+
 In a separate terminal:
+
 ```bash
 uvicorn api.main:app --reload --port 8000
 ```
 
-Then open: **http://localhost:8000/docs** to test the API interactively.
+Open:
 
-Or test with curl:
+```text
+http://localhost:8000/docs
+```
+
+to test the API using Swagger UI.
+
+Example API request:
+
 ```bash
 curl -X POST http://localhost:8000/process_ticket \
   -H "Content-Type: application/json" \
-  -d '{"ticket_id":"T100","customer_email":"a@b.com","subject":"Refund please","body":"I was charged twice, I want my money back immediately!"}'
+  -d '{"ticket_id":"T100","customer_email":"a@b.com","subject":"Refund please","body":"I was charged twice and would like a refund."}'
 ```
 
 ---
 
-## ⚡ Every Time You Work on This Project
+# Daily Workflow
 
-1. **Terminal 1:** `ollama serve` (keep open)
-2. **Terminal 2 (in support-copilot folder, venv activated):** `streamlit run ui/app.py`
+Whenever you work on the project:
+
+### Terminal 1
+
+```bash
+ollama serve
+```
+
+Keep this terminal running.
+
+### Terminal 2
+
+```bash
+source venv/bin/activate
+streamlit run ui/app.py
+```
+
+Or:
+
+```bash
+source venv/bin/activate
+uvicorn api.main:app --reload --port 8000
+```
+
+if using the API backend.
 
 ---
 
-## 🔧 Troubleshooting
+# Troubleshooting
 
-### "Connection refused" / Ollama not running
-Run `ollama serve` in a terminal and keep it open.
+## Ollama Connection Refused
 
-### "Model not found" error
-Run `ollama pull llama3.2` then try again.
+Ensure Ollama is running:
 
-### Response is very slow (>60s)
-Normal for first run — Llama loads into memory. After that it's faster.
-If consistently slow, try a lighter model:
 ```bash
-ollama pull llama3.2:1b
+ollama serve
 ```
-Then in `.env` change: `OLLAMA_MODEL=llama3.2:1b`
 
-### JSON parsing errors
-The intake agent has fallback logic so it won't crash. But if you see wrong classifications, try:
+Verify connectivity:
+
 ```bash
-ollama pull llama3.1
+curl http://localhost:11434/api/tags
 ```
-And change `.env` to `OLLAMA_MODEL=llama3.1`
 
-### ChromaDB errors on re-ingest
-Delete the chroma_db folder and run ingest again:
+---
+
+## Model Not Found
+
+Check installed models:
+
+```bash
+ollama list
+```
+
+If the model is missing:
+
+```bash
+ollama pull qwen2.5-coder:7b
+```
+
+Verify your `.env` file contains:
+
+```env
+OLLAMA_MODEL=qwen2.5-coder:7b
+```
+
+Restart the application after making changes.
+
+---
+
+## Slow First Response
+
+The first request may take longer because Ollama loads the model into memory.
+
+Subsequent requests are significantly faster.
+
+---
+
+## ChromaDB Re-ingestion Issues
+
+Delete the local database and ingest again:
+
 ```bash
 rm -rf chroma_db/
 python -m src.rag.ingest
 ```
 
-### `ModuleNotFoundError: No module named 'src'`
-Make sure you're running commands from the `support-copilot/` root folder, not from inside a subfolder.
-
 ---
 
-## 🆓 Why This is Completely Free
+## ModuleNotFoundError: No module named 'src'
 
-| Component | Original (Paid) | This Version (Free) |
-|-----------|----------------|---------------------|
-| LLM | OpenAI GPT-4o-mini ($) | Ollama Llama 3.2 (local) |
-| Embeddings | Already free | all-MiniLM-L6-v2 (local) |
-| Vector DB | Already free | ChromaDB (local) |
-| Hosting | Cloud ($) | Your computer |
-| Observability | LangSmith (optional) | LangSmith free tier |
+Make sure you are running commands from the project root:
 
-**Total cost: $0.00** 
-
----
-
-## 📊 Alternative Free Models (if Llama 3.2 is too slow)
-
-| Model | Size | Speed | Quality |
-|-------|------|-------|---------|
-| `llama3.2:1b` | 1.3GB | ⚡⚡⚡ Fast | Good |
-| `llama3.2` | 2.0GB | ⚡⚡ Medium | Better |
-| `llama3.1` | 4.7GB | ⚡ Slow | Best |
-| `mistral` | 4.1GB | ⚡ Slow | Very Good |
-| `phi3` | 2.3GB | ⚡⚡ Medium | Good |
-
-Change model in `.env`: `OLLAMA_MODEL=phi3`
-
----
-
-## 🏗️ Architecture
-
-```
-Ticket In → IntakeAgent (LLM) → RoutingAgent (rules) → RetrievalAgent (RAG)
-         → DraftingAgent (LLM) → EscalationAgent (rules) → FollowUpAgent (rules)
-         → Human Approval → Send
+```text
+support-copilot/
 ```
 
-Only 2 of 6 agents use the LLM — making this fast and resource-efficient.
+and not from a subfolder.
 
 ---
 
-## 📈 Skills Demonstrated
-- ✅ Multi-agent orchestration (LangGraph)
-- ✅ Retrieval-Augmented Generation (RAG)
-- ✅ Local LLM deployment (Ollama)
-- ✅ Hallucination detection (LLM-as-judge)
-- ✅ Human-in-the-loop design
-- ✅ Vector databases (ChromaDB)
-- ✅ REST API (FastAPI)
-- ✅ Interactive UI (Streamlit)
+# Why This Project Is Cost-Free
+
+| Component           | Technology                |
+| ------------------- | ------------------------- |
+| LLM                 | Ollama + Qwen2.5-Coder 7B |
+| Embeddings          | all-MiniLM-L6-v2          |
+| Vector Database     | ChromaDB                  |
+| Agent Orchestration | LangGraph                 |
+| Backend API         | FastAPI                   |
+| Frontend UI         | Streamlit                 |
+| Hosting             | Local Machine             |
+
+**Total Cost: $0**
+
+---
+
+# Alternative Models
+
+| Model              | Size   | Recommended Use            |
+| ------------------ | ------ | -------------------------- |
+| `qwen2.5-coder:7b` | ~4.7GB | Recommended default        |
+| `qwen2.5:7b`       | ~4.4GB | General-purpose assistant  |
+| `mistral`          | ~4.1GB | Fast general-purpose model |
+| `phi3`             | ~2.3GB | Lightweight option         |
+
+To switch models:
+
+```env
+OLLAMA_MODEL=<model-name>
+```
+
+Then restart the application.
+
+---
+
+# Architecture
+
+```text
+Ticket Input
+     │
+     ▼
+Intake Agent
+     │
+     ▼
+Routing Agent
+     │
+     ▼
+Retrieval Agent (RAG)
+     │
+     ▼
+Drafting Agent
+     │
+     ▼
+Escalation Agent
+     │
+     ▼
+Follow-Up Agent
+     │
+     ▼
+Human Review
+     │
+     ▼
+Final Response
+```
+
+Only the Intake and Drafting agents rely on the LLM, reducing latency and computational overhead.
+
+---
+
+# Skills Demonstrated
+
+* Multi-Agent Orchestration with LangGraph
+* Retrieval-Augmented Generation (RAG)
+* Local LLM Deployment with Ollama
+* Vector Databases with ChromaDB
+* FastAPI Backend Development
+* Streamlit Application Development
+* Human-in-the-Loop AI Systems
+* Prompt Engineering
+* Knowledge Retrieval Pipelines
+* AI-Powered Customer Support Automation
