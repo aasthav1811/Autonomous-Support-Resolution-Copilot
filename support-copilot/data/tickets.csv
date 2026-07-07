@@ -1,0 +1,6 @@
+ticket_id,customer_email,subject,body,timestamp
+T001,john@example.com,Cannot login,"I keep getting an error when I try to log in. It says invalid credentials but I'm sure my password is right.",2024-01-15 09:30:00
+T002,sarah@example.com,Refund request URGENT,"I was charged twice for my subscription last month! I need a refund immediately. This is unacceptable.",2024-01-15 10:15:00
+T003,mike@example.com,Where is my package,"Order #12345 was supposed to arrive 5 days ago. Tracking hasn't updated. Please help.",2024-01-15 11:00:00
+T004,lisa@example.com,Feature request,"Would love to see dark mode in the next update. Any plans for this?",2024-01-15 11:45:00
+T005,raj@example.com,App crashes constantly,"Every time I open the app it crashes within 10 seconds. iPhone 14 latest iOS. Please fix ASAP I am losing work!",2024-01-15 12:30:00

@@ -1,0 +1,36 @@
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+build/
+dist/
+
+# Environment variables
+.env
+
+# Local databases
+chroma_db/
+
+# Logs
+*.log
+
+# Jupyter
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# Next.js
+node_modules/
+.next/
+out/
+
+# VS Code
+.vscode/
+
+# Coverage
+.coverage
+htmlcov/

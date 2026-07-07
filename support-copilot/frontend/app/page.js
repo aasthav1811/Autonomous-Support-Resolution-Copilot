@@ -1,9 +1,6 @@
 'use client';
 import { useState } from 'react';
 
-// Inlined at build time — set NEXT_PUBLIC_API_URL when building for production
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-
 const PRESETS = {
   "😤 Angry billing complaint": {
     subject: "CHARGED TWICE — REFUND NOW",
@@ -94,7 +91,7 @@ export default function Home() {
     if (!form.subject || !form.body) { setError('Please fill in subject and body.'); return; }
     setError(''); setLoading(true); setResult(null);
     try {
-      const res = await fetch(`${API_URL}/process_ticket`, {
+      const res = await fetch('http://localhost:8000/process_ticket', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -105,7 +102,7 @@ export default function Home() {
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Unknown error';
       setError(msg.includes('fetch')
-        ? `❌ Cannot reach the API at ${API_URL}. Is the backend running?`
+        ? '❌ Cannot reach FastAPI. Run: uvicorn api.main:app --reload --port 8000'
         : msg);
     } finally {
       setLoading(false);
@@ -125,7 +122,7 @@ export default function Home() {
     const results = [];
     for (const t of tickets) {
       try {
-        const res = await fetch(`${API_URL}/process_ticket`, {
+        const res = await fetch('http://localhost:8000/process_ticket', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(t),

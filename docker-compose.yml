@@ -1,0 +1,32 @@
+services:
+  api:
+    build: ./support-copilot
+    ports:
+      - "8000:8000"
+    environment:
+      - LLM_PROVIDER=groq
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - GROQ_MODEL=${GROQ_MODEL:-llama-3.3-70b-versatile}
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000}
+
+  mcp:
+    build: ./support-copilot
+    command: ["python", "api/mcp_server.py"]
+    ports:
+      - "8001:8001"
+    environment:
+      - LLM_PROVIDER=groq
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - GROQ_MODEL=${GROQ_MODEL:-llama-3.3-70b-versatile}
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # Inlined into the browser bundle at build time — for a deployed
+        # setup, set this to the public URL of the api service
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
