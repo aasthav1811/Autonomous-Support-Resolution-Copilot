@@ -193,7 +193,7 @@ export default function Home() {
             <div className="w-10 h-10 rounded-xl bg-violet-600 flex items-center justify-center text-xl">🤖</div>
             <h1 className="text-3xl font-bold tracking-tight text-zinc-100">Support Copilot</h1>
             <span className="ml-2 px-3 py-1 bg-violet-500/10 border border-violet-500/20 rounded-full text-xs text-violet-400 font-medium">
-              Ollama · Free 
+              Groq · Free 
             </span>
           </div>
           <p className="text-zinc-500 text-sm">Multi-agent AI for autonomous ticket resolution · LangGraph + RAG</p>
