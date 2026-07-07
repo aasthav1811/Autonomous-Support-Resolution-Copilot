@@ -6,6 +6,5 @@ __pycache__/
 .env
 chroma_db/
 notebooks/
-frontend/
 .git/
 .DS_Store

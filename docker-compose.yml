@@ -1,6 +1,6 @@
 services:
   api:
-    build: ./support-copilot
+    build: ./backend
     ports:
       - "8000:8000"
     environment:
@@ -10,7 +10,7 @@ services:
       - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000}
 
   mcp:
-    build: ./support-copilot
+    build: ./backend
     command: ["python", "api/mcp_server.py"]
     ports:
       - "8001:8001"

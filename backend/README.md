@@ -73,7 +73,7 @@ instead, set `LLM_PROVIDER=anthropic` and `ANTHROPIC_API_KEY`.
 ## Local Development (no Docker)
 
 ```bash
-cd support-copilot
+cd backend
 python3.11 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
@@ -142,9 +142,9 @@ claude mcp add --transport http support-copilot http://localhost:8001/mcp
 The backend is a standard Docker container, so any container host works:
 
 - **Render / Railway** — create a web service from this repo, point it at
-  `support-copilot/Dockerfile`, set `GROQ_API_KEY` and `CORS_ORIGINS`
+  `backend/Dockerfile`, set `GROQ_API_KEY` and `CORS_ORIGINS`
   env vars. Port 8000.
-- **Fly.io** — `fly launch` inside `support-copilot/`.
+- **Fly.io** — `fly launch` inside `backend/`.
 - **Frontend on Vercel** — deploy the `frontend/` folder and set
   `NEXT_PUBLIC_API_URL` to your deployed API URL (it's inlined at build
   time). Then add the Vercel URL to the backend's `CORS_ORIGINS`.
@@ -189,7 +189,7 @@ rm -rf chroma_db/ && python -m src.rag.ingest
 ```
 
 **`ModuleNotFoundError: No module named 'src'`** — run commands from the
-`support-copilot/` project root.
+`backend/` project root.
 
 ---
 
