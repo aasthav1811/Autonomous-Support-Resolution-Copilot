@@ -268,7 +268,7 @@ export default function Home() {
                   </span>
                 ) : '🚀 Run Multi-Agent Workflow'}
               </button>
-              <p className="text-xs text-zinc-600 text-center">First run ~30s while Llama loads into memory</p>
+      
             </div>
 
             {/* Results */}
